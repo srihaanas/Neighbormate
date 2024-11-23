@@ -2,16 +2,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import './index.css';  // Make sure to import the CSS
+import './index.css';
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';  // Import your AWS configuration
 
-// App logo path
-import logo from '../public/logo.png';  // Make sure the logo file exists in the public folder
+// Configure Amplify with your AWS details
+Amplify.configure(awsconfig);
 
 ReactDOM.render(
   <React.StrictMode>
-    <div className="logo-container">
-      <img src={logo} alt="App Logo" />
-    </div>
     <App />
   </React.StrictMode>,
   document.getElementById('root')
