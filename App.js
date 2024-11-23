@@ -9,7 +9,7 @@ Amplify.configure(awsExports);
 function App() {
   return (
     <div>
-      <h1>Welcome to Neighbormate</h1>
+      <h1>Welcome to my Neighbormate</h1>
       <Login />
     </div>
   );
