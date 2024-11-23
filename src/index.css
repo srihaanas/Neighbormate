@@ -1,0 +1,25 @@
+/* src/index.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff9e6; /* Light yellow background */
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  padding-top: 50px;
+}
+
+/* Logo container style */
+.logo-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Styling for the logo */
+.logo-container img {
+  width: 150px;  /* Adjust the size as needed */
+  height: auto;
+}
