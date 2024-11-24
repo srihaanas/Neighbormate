@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login/Signup</title>
+  <title>Sign In</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -62,42 +62,37 @@
       color: #007bff;
       text-decoration: none;
     }
-
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
-  <!-- Step 1: Enter Mobile Number -->
-  <div class="container" id="step1">
-    <h2>Login/Signup</h2>
-    <input type="text" id="phone" placeholder="Enter your mobile number" />
+  <div class="container">
+    <h2>Sign In</h2>
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter username" />
     <button id="continue" disabled>Continue</button>
     <p>
-      By proceeding, you agree to Neighbormate's
-      <a href="#">Privacy Policy</a>,
-      <a href="#">User Agreement</a>, and
-      <a href="#">Terms of Service</a>.
+      New user? <a href="#">Create an account</a>
     </p>
   </div>
 
-  <!-- Step 2: OTP Verification -->
-  <div class="container hidden" id="step2">
-    <h2>Enter OTP</h2>
-    <input type="text" id="otp" placeholder="Enter OTP" />
-    <button id="verifyOtp">Verify OTP</button>
-  </div>
+  <script>
+    const usernameInput = document.getElementById('username');
+    const continueButton = document.getElementById('continue');
 
-  <!-- Step 3: User Details -->
-  <div class="container hidden" id="step3">
-    <h2>User Details</h2>
-    <input type="text" id="username" placeholder="Enter your name" />
-    <input type="email" id="email" placeholder="Enter your email" />
-    <input type="text" id="address" placeholder="Enter your address" />
-    <button id="submitDetails">Submit</button>
-  </div>
+    // Enable the "Continue" button when the username field is not empty
+    usernameInput.addEventListener('input', () => {
+      if (usernameInput.value.trim() !== '') {
+        continueButton.disabled = false;
+      } else {
+        continueButton.disabled = true;
+      }
+    });
 
-  <script src="script.js" type="module"></script>
+    // Placeholder for handling "Continue" click
+    continueButton.addEventListener('click', () => {
+      alert('Username: ' + usernameInput.value);
+      // Add logic to transition to the next step
+    });
+  </script>
 </body>
 </html>
