@@ -1,37 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Neighbormate</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neighbormate</title>
+  <!-- Add your favicon or other meta tags here -->
 </head>
+
 <body>
-    <!-- Username Step -->
-    <section id="step1">
-        <h2>Sign Up</h2>
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Enter username">
-        <button id="continue" disabled>Continue</button>
-        <p><a href="#step2" id="link-next" style="display:none;">Next</a></p>
-    </section>
+  <div id="root"></div>
 
-    <!-- Additional Details Step -->
-    <section id="step2" style="display:none;">
-        <h2>Additional Details</h2>
-        <label for="email">Email:</label>
-        <input type="email" id="email" placeholder="Enter email" required><br>
+  <!-- Script for redirection to Cognito -->
+  <script>
+    // Check if we are on the base URL (without any other path)
+    if (window.location.href === "https://main.dq6ynn49vwg49.amplifyapp.com/") {
+      // Redirect to Cognito Hosted UI login page
+      window.location.href = "https://us-east-1fpnhox09t.auth.us-east-1.amazoncognito.com/login?client_id=d6k56g6h1k5n23k3c7ntpklc&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fmain.dq6ynn49vwg49.amplifyapp.com%2F";
+    }
+  </script>
 
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" placeholder="Enter phone number" required><br>
-
-        <label for="address">Address:</label>
-        <textarea id="address" placeholder="Enter address" required></textarea><br>
-
-        <button id="submitDetails" disabled>Submit Details</button>
-    </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/aws-amplify@4.3.15"></script>
-    <script src="script.js"></script>
+  <!-- Add React's JS bundle here -->
+  <script src="/static/js/main.js"></script> <!-- Adjust the path if needed -->
 </body>
+
 </html>
