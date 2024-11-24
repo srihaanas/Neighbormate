@@ -1,54 +1,75 @@
-// Import AWS Amplify Auth
 import { Auth } from 'aws-amplify';
 
-// AWS Cognito Configuration
+// AWS Cognito configuration
 Auth.configure({
-  region: 'us-east-1', // Your AWS region
-  userPoolId: 'us-east-1_FPnHoX09T', // Your User Pool ID
-  userPoolWebClientId: 'd6k56g6h1k5n23k3c7ntpklc' // Your App Client ID
+  region: 'us-east-1',
+  userPoolId: 'us-east-1_FPnHoX09T',
+  userPoolWebClientId: 'd6k56g6h1k5n23k3c7ntpklc'
 });
 
-// Reference DOM elements
-const phoneInput = document.getElementById('phone');
+// Handle "Continue" button click
 const continueButton = document.getElementById('continue');
+const usernameInput = document.getElementById('username');
+const nextLink = document.getElementById('link-next');
+const submitDetailsButton = document.getElementById('submitDetails');
 
-// Function to validate mobile number
-function validatePhoneNumber(phone) {
-  // Check if the phone starts with +91 and has 10 digits after it
-  const regex = /^\+91\d{10}$/;
-  return regex.test(phone);
-}
-
-// Event listener for phone input changes
-phoneInput.addEventListener('input', () => {
-  const phone = phoneInput.value.trim();
-  if (validatePhoneNumber(phone)) {
+// Enable "Continue" button when username is valid
+usernameInput.addEventListener('input', () => {
+  const username = usernameInput.value.trim();
+  const usernamePattern = /^[a-zA-Z0-9_]+$/;  // Basic username validation (can be adjusted)
+  if (usernamePattern.test(username)) {
     continueButton.disabled = false;
-    continueButton.style.backgroundColor = "#007bff"; // Highlight button
-    continueButton.style.cursor = "pointer";
   } else {
     continueButton.disabled = true;
-    continueButton.style.backgroundColor = "#ddd"; // Dim button
-    continueButton.style.cursor = "not-allowed";
   }
 });
 
-// Handle "Continue" button click to send OTP using Cognito
+// On "Continue" button click, create the user and show next section
 continueButton.addEventListener('click', async () => {
-  const phoneNumber = phoneInput.value.trim();
+  const username = usernameInput.value.trim();
+
   try {
-    // Sign up user with a temporary password and phone number
-    await Auth.signUp({
-      username: phoneNumber,
-      password: 'TemporaryPassword123!', // Temporary password
-      attributes: { phone_number: phoneNumber }
+    const result = await Auth.signUp({
+      username,
+      password: 'TempPassword123!', // Temporary password
     });
-    alert('OTP sent to your mobile number. Please verify.');
-    // Move to the next step (e.g., show OTP input form)
+
+    console.log('User created:', result);
+
+    // Hide current section and show next section
     document.getElementById('step1').style.display = 'none';
     document.getElementById('step2').style.display = 'block';
   } catch (error) {
-    console.error('Sign-up Error:', error);
-    alert(`Error: ${error.message}`);
+    console.error('Error creating user:', error);
+    alert('Error: ' + error.message);
+  }
+});
+
+// Handle "Submit Details" button click (Save email, phone, address)
+submitDetailsButton.addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const address = document.getElementById('address').value.trim();
+  
+  try {
+    const username = usernameInput.value.trim();
+
+    // Update user attributes in AWS Cognito
+    await Auth.updateUserAttributes(
+      { Username: username },
+      { email: email, phone_number: phone, address: address }
+    );
+
+    console.log('User attributes updated');
+    
+    // Redirect for OTP verification
+    alert('Details submitted. Please check your email for OTP verification.');
+
+    // Optionally redirect user to another page or prompt for OTP
+    // window.location.href = "verify-otp.html"; // Redirect to OTP verification page
+
+  } catch (error) {
+    console.error('Error updating user:', error);
+    alert('Error: ' + error.message);
   }
 });
