@@ -1,11 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Neighbormate</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Signup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form-container {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-container h2 {
+      margin: 0 0 15px;
+      font-size: 1.2em;
+    }
+    .form-container label {
+      font-size: 0.9em;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .form-container input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    .form-container button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .form-container button:disabled {
+      background: #ddd;
+    }
+    .form-container p {
+      font-size: 0.8em;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Login/Signup</h2>
+    <label for="phone">Enter your Mobile Number</label>
+    <div>
+      <input type="text" id="phone" placeholder="+91 9876543210">
+    </div>
+    <button id="continue" disabled>Continue</button>
+    <p>By proceeding, you agree to Neighbormate's 
+      <a href="#">Privacy Policy</a>, <a href="#">User Agreement</a>, 
+      and <a href="#">Terms of Service</a>.
+    </p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/aws-amplify@latest"></script>
+  <script src="script.js"></script>
+</body>
 </html>
