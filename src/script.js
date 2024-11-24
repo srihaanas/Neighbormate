@@ -1,72 +1,54 @@
+// Import AWS Amplify Auth
 import { Auth } from 'aws-amplify';
 
+// AWS Cognito Configuration
 Auth.configure({
-  region: 'us-east-1', // Replace with your AWS region
-  userPoolId: 'us-east-1_FPnHoX09T', // Replace with your User Pool ID
-  userPoolWebClientId: 'd6k56g6h1k5n23k3c7ntpklc' // Replace with your App Client ID
+  region: 'us-east-1', // Your AWS region
+  userPoolId: 'us-east-1_FPnHoX09T', // Your User Pool ID
+  userPoolWebClientId: 'd6k56g6h1k5n23k3c7ntpklc' // Your App Client ID
 });
 
+// Reference DOM elements
 const phoneInput = document.getElementById('phone');
 const continueButton = document.getElementById('continue');
-const step1 = document.getElementById('step1');
-const step2 = document.getElementById('step2');
-const step3 = document.getElementById('step3');
 
-let phoneNumber;
+// Function to validate mobile number
+function validatePhoneNumber(phone) {
+  // Check if the phone starts with +91 and has 10 digits after it
+  const regex = /^\+91\d{10}$/;
+  return regex.test(phone);
+}
 
-phoneInput.addEventListener('input', (e) => {
-  const phone = e.target.value.trim();
-  if (phone.startsWith('+91') && phone.length === 13) {
+// Event listener for phone input changes
+phoneInput.addEventListener('input', () => {
+  const phone = phoneInput.value.trim();
+  if (validatePhoneNumber(phone)) {
     continueButton.disabled = false;
+    continueButton.style.backgroundColor = "#007bff"; // Highlight button
+    continueButton.style.cursor = "pointer";
   } else {
     continueButton.disabled = true;
+    continueButton.style.backgroundColor = "#ddd"; // Dim button
+    continueButton.style.cursor = "not-allowed";
   }
 });
 
+// Handle "Continue" button click to send OTP using Cognito
 continueButton.addEventListener('click', async () => {
-  phoneNumber = phoneInput.value.trim();
+  const phoneNumber = phoneInput.value.trim();
   try {
+    // Sign up user with a temporary password and phone number
     await Auth.signUp({
       username: phoneNumber,
-      password: 'RandomPassword123!',
+      password: 'TemporaryPassword123!', // Temporary password
       attributes: { phone_number: phoneNumber }
     });
-    step1.style.display = 'none';
-    step2.style.display = 'block';
-    alert('OTP sent to your mobile number.');
+    alert('OTP sent to your mobile number. Please verify.');
+    // Move to the next step (e.g., show OTP input form)
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
   } catch (error) {
     console.error('Sign-up Error:', error);
-    alert(error.message);
-  }
-});
-
-document.getElementById('verify-otp').addEventListener('click', async () => {
-  const otp = document.getElementById('otp').value.trim();
-  try {
-    await Auth.confirmSignUp(phoneNumber, otp);
-    step2.style.display = 'none';
-    step3.style.display = 'block';
-  } catch (error) {
-    console.error('OTP Verification Error:', error);
-    alert(error.message);
-  }
-});
-
-document.getElementById('submit-details').addEventListener('click', async () => {
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const address = document.getElementById('address').value.trim();
-  
-  try {
-    await Auth.updateUserAttributes(Auth.currentAuthenticatedUser(), {
-      name: name,
-      email: email,
-      address: address
-    });
-    alert('Details updated successfully. A verification email has been sent.');
-    await Auth.verifyCurrentUserAttribute('email');
-  } catch (error) {
-    console.error('Details Submission Error:', error);
-    alert(error.message);
+    alert(`Error: ${error.message}`);
   }
 });
