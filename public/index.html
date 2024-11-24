@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
+      background-color: #fdf3e1;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -61,11 +61,25 @@
 <body>
   <div class="form-container">
     <h2>Login/Signup</h2>
-    <label for="phone">Enter your Mobile Number</label>
-    <div>
+    <div id="step1">
+      <label for="phone">Enter your Mobile Number</label>
       <input type="text" id="phone" placeholder="+91 9876543210">
+      <button id="continue" disabled>Continue</button>
     </div>
-    <button id="continue" disabled>Continue</button>
+    <div id="step2" style="display:none;">
+      <label for="otp">Enter OTP</label>
+      <input type="text" id="otp" placeholder="Enter OTP">
+      <button id="verify-otp">Verify OTP</button>
+    </div>
+    <div id="step3" style="display:none;">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Enter your name">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
+      <label for="address">Address</label>
+      <input type="text" id="address" placeholder="Enter your address">
+      <button id="submit-details">Submit</button>
+    </div>
     <p>By proceeding, you agree to Neighbormate's 
       <a href="#">Privacy Policy</a>, <a href="#">User Agreement</a>, 
       and <a href="#">Terms of Service</a>.
