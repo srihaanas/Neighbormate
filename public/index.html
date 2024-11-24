@@ -7,85 +7,97 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #fdf3e1;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
-    .form-container {
-      background: white;
-      border-radius: 8px;
+
+    .container {
+      background-color: #fff;
       padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       width: 300px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
     }
-    .form-container h2 {
-      margin: 0 0 15px;
-      font-size: 1.2em;
+
+    .container h2 {
+      margin-bottom: 20px;
     }
-    .form-container label {
-      font-size: 0.9em;
-      margin-bottom: 5px;
-      display: block;
-    }
-    .form-container input {
+
+    .container input {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 5px;
-      font-size: 1em;
     }
-    .form-container button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px;
+
+    .container button {
       width: 100%;
+      padding: 10px;
+      background-color: #ddd;
+      border: none;
       border-radius: 5px;
-      font-size: 1em;
+      cursor: not-allowed;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .container button:enabled {
+      background-color: #007bff;
       cursor: pointer;
     }
-    .form-container button:disabled {
-      background: #ddd;
-    }
-    .form-container p {
-      font-size: 0.8em;
-      text-align: center;
+
+    .container p {
+      font-size: 12px;
       margin-top: 10px;
+    }
+
+    .container a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
+  <!-- Step 1: Enter Mobile Number -->
+  <div class="container" id="step1">
     <h2>Login/Signup</h2>
-    <div id="step1">
-      <label for="phone">Enter your Mobile Number</label>
-      <input type="text" id="phone" placeholder="+91 9876543210">
-      <button id="continue" disabled>Continue</button>
-    </div>
-    <div id="step2" style="display:none;">
-      <label for="otp">Enter OTP</label>
-      <input type="text" id="otp" placeholder="Enter OTP">
-      <button id="verify-otp">Verify OTP</button>
-    </div>
-    <div id="step3" style="display:none;">
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="Enter your name">
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Enter your email">
-      <label for="address">Address</label>
-      <input type="text" id="address" placeholder="Enter your address">
-      <button id="submit-details">Submit</button>
-    </div>
-    <p>By proceeding, you agree to Neighbormate's 
-      <a href="#">Privacy Policy</a>, <a href="#">User Agreement</a>, 
-      and <a href="#">Terms of Service</a>.
+    <input type="text" id="phone" placeholder="Enter your mobile number" />
+    <button id="continue" disabled>Continue</button>
+    <p>
+      By proceeding, you agree to Neighbormate's
+      <a href="#">Privacy Policy</a>,
+      <a href="#">User Agreement</a>, and
+      <a href="#">Terms of Service</a>.
     </p>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/aws-amplify@latest"></script>
-  <script src="script.js"></script>
+
+  <!-- Step 2: OTP Verification -->
+  <div class="container hidden" id="step2">
+    <h2>Enter OTP</h2>
+    <input type="text" id="otp" placeholder="Enter OTP" />
+    <button id="verifyOtp">Verify OTP</button>
+  </div>
+
+  <!-- Step 3: User Details -->
+  <div class="container hidden" id="step3">
+    <h2>User Details</h2>
+    <input type="text" id="username" placeholder="Enter your name" />
+    <input type="email" id="email" placeholder="Enter your email" />
+    <input type="text" id="address" placeholder="Enter your address" />
+    <button id="submitDetails">Submit</button>
+  </div>
+
+  <script src="script.js" type="module"></script>
 </body>
 </html>
