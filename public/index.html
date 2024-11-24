@@ -65,7 +65,7 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="step1">
     <h2>Sign In</h2>
     <label for="username">Username</label>
     <input type="text" id="username" placeholder="Enter username" />
@@ -75,23 +75,78 @@
     </p>
   </div>
 
+  <div class="container" id="step2" style="display: none;">
+    <h2>Additional Details</h2>
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter email" />
+    <label for="address">Address</label>
+    <input type="text" id="address" placeholder="Enter address" />
+    <button id="submit">Submit</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/aws-amplify/dist/aws-amplify.min.js"></script>
   <script>
+    // AWS Amplify configuration
+    const amplifyConfig = {
+      region: 'us-east-1',
+      userPoolId: 'us-east-1_FPnHoX09T',
+      userPoolWebClientId: 'd6k56g6h1k5n23k3c7ntpklc'
+    };
+    aws_amplify.Auth.configure(amplifyConfig);
+
     const usernameInput = document.getElementById('username');
     const continueButton = document.getElementById('continue');
+    const emailInput = document.getElementById('email');
+    const addressInput = document.getElementById('address');
+    const submitButton = document.getElementById('submit');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
 
     // Enable the "Continue" button when the username field is not empty
     usernameInput.addEventListener('input', () => {
-      if (usernameInput.value.trim() !== '') {
-        continueButton.disabled = false;
-      } else {
-        continueButton.disabled = true;
+      continueButton.disabled = usernameInput.value.trim() === '';
+    });
+
+    // Handle "Continue" button click
+    continueButton.addEventListener('click', async () => {
+      const username = usernameInput.value.trim();
+
+      try {
+        // Create user in AWS Cognito
+        const result = await aws_amplify.Auth.signUp({
+          username,
+          password: 'TempPassword123!', // Temporary password, can be changed later
+        });
+        console.log('User created:', result);
+
+        // Show step 2 (Additional Details)
+        step1.style.display = 'none';
+        step2.style.display = 'block';
+      } catch (error) {
+        console.error('Error creating user:', error);
+        alert('Error creating user: ' + error.message);
       }
     });
 
-    // Placeholder for handling "Continue" click
-    continueButton.addEventListener('click', () => {
-      alert('Username: ' + usernameInput.value);
-      // Add logic to transition to the next step
+    // Handle "Submit" button click
+    submitButton.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const address = addressInput.value.trim();
+
+      try {
+        // Update user attributes in AWS Cognito
+        const currentUser = await aws_amplify.Auth.currentAuthenticatedUser();
+        await aws_amplify.Auth.updateUserAttributes(currentUser, {
+          email,
+          'custom:address': address // Custom attribute for address
+        });
+
+        alert('User details saved successfully!');
+        console.log('User details updated.');
+      } catch (error) {
+        console.error('Error updating user details:', error);
+        alert('Error updating user details: ' + error.message);
+      }
     });
   </script>
 </body>
